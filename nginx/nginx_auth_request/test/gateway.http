@@ -1,0 +1,18 @@
+@host=http://localhost:8800
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY2MTE3MzM2NX0.Nc70MOCGuaGzxx2L5unYp09RF92vKslIu9TzaBj38vc
+
+
+### Signin
+POST {{host}}/api/auth/signin?isAdmin=true
+
+### Verify
+GET {{host}}/api/auth/verify
+Authorization: Bearer {{token}}
+
+### Only Admin
+GET {{host}}/api/resource/admin
+Authorization: Bearer {{token}}
+
+### Private
+GET {{host}}/api/resource/private
+Authorization: Bearer {{token}}
