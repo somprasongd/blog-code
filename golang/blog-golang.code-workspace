@@ -1,0 +1,56 @@
+{
+	"folders": [
+		{
+			"path": "goapi"
+		},
+		{
+			"path": "goapi-casbin"
+		},
+		{
+			"path": "goapi-db-migrate"
+		},
+		{
+			"path": "goapi-doc"
+		},
+		{
+			"path": "goapi-graceful-shutdown"
+		},
+		{
+			"path": "goapi-handlefunc"
+		},
+		{
+			"path": "goapi-hax"
+		},
+		{
+			"path": "goapi-hex"
+		},
+		{
+			"path": "goapi-jwt"
+		},
+		{
+			"path": "goapi-project-structure"
+		},
+		{
+			"path": "goapi-testing"
+		},
+		{
+			"path": "gobasic"
+		},
+		{
+			"path": "godb"
+		},
+		{
+			"path": "godb-gorm"
+		},
+		{
+			"path": "godb-sqlx"
+		},
+		{
+			"path": "gotest"
+		},
+		{
+			"path": "goapi-log"
+		}
+	],
+	"settings": {}
+}

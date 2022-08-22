@@ -1,0 +1,11 @@
+@host=http://localhost:3001
+@admin=eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY2MDkwMDgzOH0=
+@user=eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY2MDkwMjg3MX0=
+
+### Only Admin
+GET {{host}}/api/admin
+X-Id-Token: {{user}}
+
+### Private
+GET {{host}}/api/private
+X-Id-Token: {{user}}

@@ -1,0 +1,32 @@
+@base_url=http://localhost:8080
+@id=1
+
+### create
+POST {{base_url}}/api/todos
+Content-Type: application/json
+
+{
+  "text": "test 1"
+}
+
+### get all
+GET {{base_url}}/api/todos
+
+### get all completed=true
+GET {{base_url}}/api/todos?completed=true
+
+### get all completed=false
+GET {{base_url}}/api/todos?completed=false
+
+### get by id
+GET {{base_url}}/api/todos/{{id}}
+
+### update status
+PUT {{base_url}}/api/todos/{{id}}
+Content-Type: application/json
+
+{
+  "isCompleted": true
+}
+### delete by id
+DELETE {{base_url}}/api/todos/{{id}}

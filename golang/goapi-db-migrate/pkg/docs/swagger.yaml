@@ -1,0 +1,424 @@
+definitions:
+  swagdto.Error400:
+    properties:
+      error:
+        $ref: '#/definitions/swagdto.ErrorData400'
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 400
+        type: integer
+    type: object
+  swagdto.Error404:
+    properties:
+      error:
+        $ref: '#/definitions/swagdto.ErrorData404'
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 404
+        type: integer
+    type: object
+  swagdto.Error422:
+    properties:
+      error:
+        $ref: '#/definitions/swagdto.ErrorData422'
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 422
+        type: integer
+    type: object
+  swagdto.Error500:
+    properties:
+      error:
+        $ref: '#/definitions/swagdto.ErrorData500'
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 500
+        type: integer
+    type: object
+  swagdto.ErrorData400:
+    properties:
+      code:
+        example: "400"
+        type: string
+      message:
+        example: Bad Request
+        type: string
+    type: object
+  swagdto.ErrorData404:
+    properties:
+      code:
+        example: "404"
+        type: string
+      message:
+        example: Not Found
+        type: string
+    type: object
+  swagdto.ErrorData422:
+    properties:
+      code:
+        example: "422"
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/swagdto.ErrorDetail'
+        type: array
+      message:
+        example: invalid data see details
+        type: string
+    type: object
+  swagdto.ErrorData500:
+    properties:
+      code:
+        example: "500"
+        type: string
+      message:
+        example: Internal Server Error
+        type: string
+    type: object
+  swagdto.ErrorDetail:
+    properties:
+      message:
+        example: name field is required
+        type: string
+      target:
+        example: name
+        type: string
+    type: object
+  swagdto.PagingResult:
+    properties:
+      count:
+        example: 20
+        type: integer
+      limit:
+        example: 10
+        type: integer
+      nextPage:
+        example: 2
+        type: integer
+      page:
+        example: 1
+        type: integer
+      prevPage:
+        example: 0
+        type: integer
+      totalPage:
+        example: 2
+        type: integer
+    type: object
+  swagdto.Response:
+    properties:
+      data: {}
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagdto.ResponseWithPage:
+    properties:
+      _pagination:
+        $ref: '#/definitions/swagdto.PagingResult'
+      data: {}
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.CreateTodoFrom:
+    properties:
+      text:
+        description: 'Required: true'
+        example: do something
+        type: string
+    type: object
+  swagger.ErrCreateSampleData:
+    properties:
+      code:
+        example: "422"
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/swagger.ErrorDetailCreate'
+        type: array
+      message:
+        example: invalid data see details
+        type: string
+    type: object
+  swagger.ErrUpdateSampleData:
+    properties:
+      code:
+        example: "422"
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/swagger.ErrorDetailUpdate'
+        type: array
+      message:
+        example: invalid data see details
+        type: string
+    type: object
+  swagger.ErrorDetailCreate:
+    properties:
+      message:
+        example: text field is required
+        type: string
+      target:
+        example: text
+        type: string
+    type: object
+  swagger.ErrorDetailUpdate:
+    properties:
+      message:
+        example: completed field is required
+        type: string
+      target:
+        example: completed
+        type: string
+    type: object
+  swagger.TodoRepsonse:
+    properties:
+      completed:
+        example: false
+        type: boolean
+      id:
+        example: bfbc2a69-9825-4a0e-a8d6-ffb985dc719c
+        type: string
+      text:
+        example: do something
+        type: string
+    type: object
+  swagger.TodoSampleData:
+    properties:
+      todo:
+        $ref: '#/definitions/swagger.TodoRepsonse'
+    type: object
+  swagger.TodoSampleListData:
+    properties:
+      todos:
+        items:
+          $ref: '#/definitions/swagger.TodoRepsonse'
+        type: array
+    type: object
+  swagger.UpdateTodoStatusForm:
+    properties:
+      completed:
+        description: 'Required: true'
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: You can filter all existing todos by listing them.
+      parameters:
+      - description: 'filter the text based value (ex: term=dosomething)'
+        in: query
+        name: term
+        type: string
+      - description: 'filter the status based value (ex: completed=true)'
+        in: query
+        name: completed
+        type: boolean
+      - description: Go to a specific page number. Start with 1
+        in: query
+        name: page
+        type: integer
+      - description: Page size for the data
+        in: query
+        name: limit
+        type: integer
+      - description: 'Page order. Eg: text desc,createdAt desc'
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/swagdto.ResponseWithPage'
+            - properties:
+                data:
+                  $ref: '#/definitions/swagger.TodoSampleListData'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      summary: List all existing todos
+      tags:
+      - Todo
+    post:
+      consumes:
+      - application/json
+      description: Add a new todo
+      parameters:
+      - description: Todo Data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.CreateTodoFrom'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/swagdto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/swagger.TodoSampleData'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/swagdto.Error422'
+            - properties:
+                error:
+                  $ref: '#/definitions/swagger.ErrCreateSampleData'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      summary: Add a new todo
+      tags:
+      - Todo
+  /todos/{id}:
+    delete:
+      description: Delete a specific todo by id
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      summary: Delete a todo
+      tags:
+      - Todo
+    get:
+      description: Get a specific todo by id
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/swagdto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/swagger.TodoSampleData'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      summary: Get a todo
+      tags:
+      - Todo
+    patch:
+      description: Update a specific todo status by id
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Todo Status Data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.UpdateTodoStatusForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/swagdto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/swagger.TodoSampleData'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/swagdto.Error422'
+            - properties:
+                error:
+                  $ref: '#/definitions/swagger.ErrUpdateSampleData'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      summary: Update a todo status
+      tags:
+      - Todo
+swagger: "2.0"

@@ -1,0 +1,53 @@
+@host=http://localhost:8080
+
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxMkBtYWlsLmNvbSIsImV4cCI6MTY1OTY4MDM4NiwiaWF0IjoxNjU5NjgwMDg2LCJyb2xlIjoiYWRtaW4iLCJzdWIiOiJhYzQwOWI3Yy00OWFhLTQxNjAtODBiZi1lMmU0Y2E4OWE2YzQiLCJ1c2VyX2lkIjoiNzM0OWM4OTItZGYyOS00NWM5LWJkODgtNGU1MGRmZmY0ZTFhIn0.woXYTlZpldU57FnAIddbJn-wSjq6QIzp_WUWJY9b5bc
+
+@refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjIyODgxNTcsImlhdCI6MTY1OTY5NjE1Nywic3ViIjoiOWU1MmZkOTItZGMwZC00NmNjLTlhYjctYzdjYzcwYjliNDMwIn0.kifRJhUl73FjfjP8o5jqu6h6c9zk_U6ZguOPRSjGKXs
+
+### register
+POST {{host}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@mail.com",
+  "password": "user"
+}
+
+### login
+POST {{host}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@mail.com",
+  "password": "user"
+}
+
+### profile
+GET {{host}}/api/v1/auth/profile
+Authorization: Bearer {{token}}
+
+### update profile
+PATCH  {{host}}/api/v1/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password_old": "1234",
+  "password_new": "user"
+}
+
+### refresh token
+POST  {{host}}/api/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refresh_token}}"
+}
+
+### revoke token
+POST  {{host}}/api/v1/auth/revoke
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refresh_token}}"
+}

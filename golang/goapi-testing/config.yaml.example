@@ -1,0 +1,20 @@
+app:
+  baseurl: '/api/v1'
+  mode: 'development'
+  version: '1.0'
+
+server:
+  port: 8080
+  timeout:
+    read: '15s'
+    write: '15s'
+    idle: '60s'
+
+db:
+  driver: 'postgres'
+  host: 'localhost'
+  port: 5433
+  username: 'postgres'
+  password: 'S3cretp@ssw0rd'
+  database: 'todos'
+  sslmode: 'disable'

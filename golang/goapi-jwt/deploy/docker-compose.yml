@@ -1,0 +1,22 @@
+version: '2.4'
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: goapi-cache
+
+  db:
+    image: postgres:12-alpine
+    container_name: goapi-db
+    restart: always
+    environment:
+      - TZ=Asia/Bangkok
+      - PGTZ=Asia/Bangkok
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=S3cretp@ssw0rd
+      - POSTGRES_DB=goapi
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./config/pg/sql/init.sql:/docker-entrypoint-initdb.d/1-init.sql
+
+volumes:
+  pg_data:

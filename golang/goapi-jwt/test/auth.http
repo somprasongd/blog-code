@@ -1,0 +1,36 @@
+@host=http://localhost:8080
+
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJzdWIiOiJmODYxOTM2Yy0wNjJmLTRlNDktODJhOC0wOGYzOWFiZWRkYTkiLCJpYXQiOjE2NTk2MDQ5NDN9.xLmFazSsF8hJMqfGXGePr6VzVDY_ZvuyNe7T-jpRcIk
+
+
+### register
+POST {{host}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@mail.com",
+  "password": "user"
+}
+
+### login
+POST {{host}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@mail.com",
+  "password": "user"
+}
+
+### profile
+GET {{host}}/api/v1/auth/profile
+Authorization: Bearer {{token}}
+
+### update profile
+PATCH  {{host}}/api/v1/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password_old": "1234",
+  "password_new": "user"
+}

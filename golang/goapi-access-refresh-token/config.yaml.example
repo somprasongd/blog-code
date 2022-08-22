@@ -1,0 +1,35 @@
+app:
+  baseurl: '/api/v1'
+  mode: 'development'
+  version: '1.0'
+
+server:
+  port: 8080
+  timeout:
+    read: '15s'
+    write: '15s'
+    idle: '60s'
+
+db:
+  driver: 'postgres'
+  host: 'localhost'
+  port: 5433
+  username: 'postgres'
+  password: 'S3cretp@ssw0rd'
+  database: 'goapi'
+  sslmode: 'disable'
+
+redis:
+  host: 'localhost'
+  port: 6379
+  password: ''
+  database: 0
+
+token:
+  access:
+    secret: 'access_supers3cret'
+    expires: '5m'
+  refresh:
+    secret: 'refresh_supers3cret'
+    # 30 day
+    expires: '720h'

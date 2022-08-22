@@ -1,0 +1,30 @@
+@host=http://localhost:8080
+
+
+### Create Todo
+POST {{host}}/api/v1/todos
+Content-Type: application/json
+
+{
+  "text": "test 1"
+}
+
+### List Todo
+GET {{host}}/api/v1/todos
+
+### List Todo with filter
+GET {{host}}/api/v1/todos?term=sometext
+
+### Get Todo
+GET {{host}}/api/v1/todos/100
+
+### Update Todo status
+PATCH {{host}}/api/v1/todos/100
+Content-Type: application/json
+
+{
+  "completed": true
+}
+
+### Delete Todo
+DELETE {{host}}/api/v1/todos/100

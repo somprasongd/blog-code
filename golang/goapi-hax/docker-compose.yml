@@ -1,0 +1,46 @@
+version: '2.4'
+services:
+  db:
+    image: postgres:12-alpine
+    container_name: todo-db
+    restart: always
+    environment:
+      - TZ=Asia/Bangkok
+      - PGTZ=Asia/Bangkok
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=S3cretp@ssw0rd
+      - POSTGRES_DB=todos
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    container_name: todo-api
+    build:
+      context: .
+    image: todo-api:1.0.0
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - TZ=Asia/Bangkok
+      - DB_DRIVER=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=S3cretp@ssw0rd
+      - DB_DATABASE=todos
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pg_data:

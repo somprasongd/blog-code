@@ -1,0 +1,7 @@
+@host=http://localhost:3000
+
+### 
+GET {{host}}?abc=def
+
+###
+GET {{host}}/23456

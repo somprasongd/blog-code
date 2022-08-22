@@ -1,0 +1,9 @@
+@host=http://localhost:3000
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY2MDkwMjg3MX0.k2zCWCrRduSX2ZyskSrmpGvgJx5wzHs1_xXtuxvnsZE
+
+### Signin
+POST {{host}}/api/auth/signin?isAdmin=
+
+### Verify
+POST {{host}}/api/auth/verify
+Authorization: Bearer {{token}}

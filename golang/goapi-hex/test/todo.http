@@ -1,0 +1,9 @@
+@host=http://localhost:8080
+
+### create
+POST {{host}}/api/todos
+Content-Type: application/json
+
+{
+  "text": "test 1"
+}

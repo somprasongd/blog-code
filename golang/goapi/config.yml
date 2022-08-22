@@ -1,0 +1,10 @@
+app:
+  port: 8080
+
+db:
+  driver: 'postgres'
+  host: 'john.db.elephantsql.com'
+  port: 5432
+  username: 'fcricryh'
+  password: 'F5a7wATfocTUNww1Dm14AfebtPaysqIn'
+  database: 'fcricryh'

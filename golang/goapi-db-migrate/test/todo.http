@@ -1,0 +1,36 @@
+@host=http://localhost:8080
+@id=634e5c1f-57f5-4e97-baad-fdcc3b54d48e
+
+### create
+POST {{host}}/api/v1/todos
+Content-Type: application/json
+X-Request-ID: ABC
+
+{
+  "text": "abc"
+}
+
+### list all
+GET {{host}}/api/v1/todos
+
+### list with filter
+GET {{host}}/api/v1/todos?term=1&completed=0
+
+### list all completed
+GET {{host}}/api/v1/todos?completed=1
+
+### list all uncompleted
+GET {{host}}/api/v1/todos?completed=0
+
+### get by id
+GET {{host}}/api/v1/todos/{{id}}
+
+### update status
+PATCH  {{host}}/api/v1/todos/{{id}}
+Content-Type: application/json
+
+{
+  "completed": true
+}
+### delete by id
+DELETE {{host}}/api/v1/todos/{{id}}

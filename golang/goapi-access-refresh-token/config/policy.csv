@@ -1,0 +1,8 @@
+p, (admin)|(user), /api/v1/auth/profile, GET
+p, admin, /api/v1/users, (GET)|(POST)
+p, admin, /api/v1/users/*, (GET)|(PATCH)|(DELETE)
+
+p2, /api/v1/auth/register, POST
+p2, /api/v1/auth/login, POST
+p2, /api/v1/auth/refresh, POST
+p2, /api/v1/auth/revoke, POST

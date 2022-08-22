@@ -1,0 +1,3 @@
+mode: set
+gotest/math/math.go:4.30,6.2 1 1
+gotest/math/math.go:9.35,11.2 1 0
