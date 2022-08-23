@@ -1,0 +1,11 @@
+@host=http://localhost:3001
+@admin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjYxMTYwNjE3fQ.pPxSB5HlN49ecHq2WMt6032r-EdRHHgZpUT0JqOGdRw
+@user=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY2MDkwMjg3MX0.k2zCWCrRduSX2ZyskSrmpGvgJx5wzHs1_xXtuxvnsZE
+
+### Only Admin
+GET {{host}}/api/resource/admin
+Authorization: Bearer {{admin}}
+
+### Private
+GET {{host}}/api/resource/private
+Authorization: Bearer {{user}}

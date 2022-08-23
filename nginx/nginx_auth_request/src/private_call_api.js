@@ -1,12 +1,19 @@
 const express = require('express');
+const axios = require('axios');
 
 function main() {
   const app = express();
-  app.use((req, res, next) => {
-    const idToken = req.headers['x-id-token'];
-    if (!idToken) return res.sendStatus(401);
-    const decoded = Buffer.from(idToken, 'base64').toString('ascii');
-    const user = JSON.parse(decoded);
+  app.use(async (req, res, next) => {
+    const response = await axios.post(
+      'http://localhost:3000/api/auth/verify',
+      {},
+      {
+        headers: {
+          Authorization: req.headers.authorization,
+        },
+      }
+    );
+    const user = response.data;
     req.user = user;
     next();
   });
@@ -22,7 +29,7 @@ function main() {
     res.json({ message: `User "${user.username}" can access private` });
   });
 
-  app.listen('3002', console.log('private server start on port 3002'));
+  app.listen('3001', console.log('private server start on port 3001'));
 }
 
 main();
