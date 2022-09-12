@@ -1,0 +1,74 @@
+version: '3.8'
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.4.1
+    # Run as 'root' instead of 'filebeat' (uid 1000) to allow reading
+    # 'docker.sock' and the host's filesystem.
+    user: root
+    command:
+      # Log to stderr.
+      - -e
+      # Disable config file permissions checks. Allows mounting
+      # 'config/filebeat.yml' even if it's not owned by root.
+      # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
+      - --strict.perms=false
+    volumes:
+      - ./config/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro,Z
+      - type: bind
+        source: /var/lib/docker/containers
+        target: /var/lib/docker/containers
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-elastic}
+    labels:
+      co.elastic.logs/enabled: false
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      discovery.type: single-node
+    labels:
+      co.elastic.logs/enabled: false
+    # healthcheck:
+    #   # test: ['CMD', 'curl', '-s', '-f', 'http://localhost:9200/_cat/health']
+    #   test: curl -u elastic:elastic -s -f elasticsearch:9200/_cat/health >/dev/null || exit 1
+    #   interval: 15s
+    #   timeout: 5s
+    #   retries: 80
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.1
+    ports:
+      - 5601:5601
+    environment:
+      SERVERNAME: kibana
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-kibana}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-kibana}
+
+    labels:
+      co.elastic.logs/enabled: false
+    # healthcheck:
+    #   test: ['CMD', 'curl', '-s', '-f', 'http://localhost:5601/api/status']
+    #   interval: 3s
+    #   timeout: 3s
+    #   retries: 80
+
+    depends_on:
+      elasticsearch:
+        condition: service_started
+
+volumes:
+  esdata:
+    driver: local

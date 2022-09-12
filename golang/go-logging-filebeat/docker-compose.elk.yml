@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: docker.io/bitnami/elasticsearch:8.4.1
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      - BITNAMI_DEBUG=true
+    volumes:
+      - 'elasticsearch_data:/bitnami/elasticsearch/data'
+    labels:
+      co.elastic.logs/enabled: false
+    healthcheck:
+      test: ['CMD', 'curl', '-s', '-f', 'http://localhost:9200/_cat/health']
+      interval: 15s
+      timeout: 5s
+      retries: 80
+
+  kibana:
+    image: docker.io/bitnami/kibana:8.4.1
+    ports:
+      - '5601:5601'
+    environment:
+      - BITNAMI_DEBUG=true
+      - KIBANA_ELASTICSEARCH_URL=elasticsearch
+      - KIBANA_ELASTICSEARCH_PORT_NUMBER=9200
+    volumes:
+      - 'kibana_data:/bitnami/kibana'
+    labels:
+      co.elastic.logs/enabled: false
+    healthcheck:
+      test: ['CMD', 'curl', '-s', '-f', 'http://localhost:5601/api/status']
+      interval: 15s
+      timeout: 5s
+      retries: 80
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.4.1
+    # Run as 'root' instead of 'filebeat' (uid 1000) to allow reading
+    # 'docker.sock' and the host's filesystem.
+    user: root
+    command:
+      # Log to stderr.
+      - -e
+      # Disable config file permissions checks. Allows mounting
+      # 'config/filebeat.yml' even if it's not owned by root.
+      # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
+      - --strict.perms=false
+    volumes:
+      - ./config/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro,Z
+      - type: bind
+        source: /var/lib/docker/containers
+        target: /var/lib/docker/containers
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    labels:
+      co.elastic.logs/enabled: false
+
+volumes:
+  elasticsearch_data:
+    driver: local
+  kibana_data:
+    driver: local
