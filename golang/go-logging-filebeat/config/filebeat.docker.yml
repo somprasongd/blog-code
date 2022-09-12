@@ -1,0 +1,30 @@
+## Filebeat configuration
+## https://github.com/elastic/beats/blob/master/deploy/docker/filebeat.docker.yml
+#
+
+# filebeat.config:
+#   modules:
+#     path: ${path.config}/modules.d/*.yml
+#     reload.enabled: false
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+      # only containers with co.elastic.logs/enabled: true will be discovered
+      hints.default_config.enabled: false
+
+processors:
+  - add_cloud_metadata: ~
+
+output.elasticsearch:
+  hosts: ['elasticsearch:9200']
+  # username: elastic
+  # password: ${ELASTIC_PASSWORD:}
+
+## HTTP endpoint for health checking
+## https://www.elastic.co/guide/en/beats/filebeat/current/http-endpoint.html
+#
+
+http.enabled: true
+http.host: 0.0.0.0
