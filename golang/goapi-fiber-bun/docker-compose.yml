@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: todo-db
+    restart: always
+    environment:
+      - TZ=Asia/Bangkok
+      - PGTZ=Asia/Bangkok
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=todo-db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./migrations:/migrations
+    command: -verbose -path=/migrations/ -database postgres://postgres:mysecretpassword@db:5432/todo-db?sslmode=disable up
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build: .
+    image: todo-api:1.0.0
+    container_name: todo-api
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - TZ=Asia/Bangkok
+      - APP_MODE=production
+      - DSN=postgres://postgres:mysecretpassword@db:5432/todo-db?sslmode=disable
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  pg_data:

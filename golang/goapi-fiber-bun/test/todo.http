@@ -1,0 +1,27 @@
+###
+POST http://localhost:3000/api/v1/todos
+Content-Type: application/json
+
+{
+  "text": "do something abc"
+}
+
+### List All
+GET http://localhost:3000/api/v1/todos
+
+### List By status
+GET http://localhost:3000/api/v1/todos?completed=true
+
+### Get By Id
+GET http://localhost:3000/api/v1/todos/13
+
+### Update todo status
+PATCH http://localhost:3000/api/v1/todos/1
+Content-Type: application/json
+
+{
+  "completed": true
+}
+
+### Delete todo by id
+DELETE http://localhost:3000/api/v1/todos/13

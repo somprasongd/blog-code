@@ -1,0 +1,2 @@
+port: 3000
+dsn: 'postgres://postgres:mysecretpassword@localhost:5433/todo-db?sslmode=disable'
